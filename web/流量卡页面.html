@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>蛋仔派对 × Sanrio characters</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #e8f0ff 0%, #79BFFE 100%);
+            color: #333;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .top-banner img {
+            width: 100%;
+            display: block;
+        }
+
+        .recent-claims-section {
+            margin: 20px 15px;
+            overflow: hidden;
+            position: relative;
+            height: 40px;
+            background: transparent;
+        }
+
+        .notification-container {
+            display: flex;
+            position: absolute;
+            gap: 20px;  /* 消息框之间的间隔 */
+        }
+
+        .claim-item {
+            color: #666;
+            font-size: 14px;
+            white-space: nowrap;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(114, 114, 114, 0.1);
+            width: 200px;  /* 固定宽度 */
+            text-align: center;  /* 文字居中 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;  /* 防止flex布局压缩元素 */
+        }
+
+        .input-section {
+            margin: 20px 15px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .phone-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .code-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .code-input {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .get-code-btn {
+            width: 120px;
+            background: #40a9ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .get-code-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #ff4d4f;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            padding-left: 5px;
+        }
+
+        .agreement {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 15px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .agreement a {
+            color: #40a9ff;
+            text-decoration: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #40a9ff;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .bottom-banner img {
+            width: 100%;
+            display: block;
+        }
+    </style>
+    <script>
+        // 通知数据配置
+        const notifications = [
+            "151****7535领到了10000蛋币",
+            "181****3507领到了神裁者安努斯",
+            "135****5589领到了圣翼天使",
+            "176****7272领到了北辰星斗破君",
+            "158****9722领到了10000蛋币",
+            "134****3012领到了胡半仙",
+            "191****8911领到了红果小浣熊",
+            "137****0341领到了冰淇淋企鹅"
+        ];
+
+        function startScroll() {
+            const container = document.querySelector('.recent-claims-section');
+            const notificationContainer = document.createElement('div');
+            notificationContainer.className = 'notification-container';
+            
+            // 创建两组通知元素以实现无缝循环
+            [...notifications, ...notifications].forEach(text => {
+                const item = document.createElement('div');
+                item.className = 'claim-item';
+                item.textContent = text;
+                notificationContainer.appendChild(item);
+            });
+
+            container.innerHTML = ''; // 清除原有的静态通知
+            container.appendChild(notificationContainer);
+
+            const totalWidth = notificationContainer.offsetWidth / 2; // 一组通知的总宽度
+            let position = 0; // 起始位置
+
+            function animate() {
+                position -= 1; // 每次移动1像素
+                
+                // 当移动到第一组结束时，重置位置到开始
+                if (-position >= totalWidth) {
+                    position = 0;
+                }
+                
+                notificationContainer.style.transform = `translateX(${position}px)`;
+                requestAnimationFrame(animate);
+            }
+
+            // 开始动画
+            requestAnimationFrame(animate);
+        }
+
+        window.onload = startScroll;
+
+        let timer = null;
+        function getVerificationCode() {
+            const btn = document.querySelector('.get-code-btn');
+            const phoneInput = document.querySelector('.phone-input');
+            const phoneError = document.getElementById('phone-error');
+            
+            if (!phoneInput.value) {
+                phoneError.style.display = 'block';
+                return;
+            }
+            
+            // 禁用按钮并开始倒计时
+            btn.disabled = true;
+            let seconds = 60;
+            
+            timer = setInterval(() => {
+                seconds--;
+                btn.textContent = `${seconds}秒后重试`;
+                
+                if (seconds <= 0) {
+                    clearInterval(timer);
+                    btn.disabled = false;
+                    btn.textContent = '获取验证码';
+                }
+            }, 1000);
+        }
+
+        function validateAndSubmit() {
+            const phoneInput = document.querySelector('.phone-input');
+            const codeInput = document.querySelector('.code-input');
+            const agreeCheckbox = document.getElementById('agree');
+            const phoneError = document.getElementById('phone-error');
+            const codeError = document.getElementById('code-error');
+            const agreeError = document.getElementById('agree-error');
+            
+            // 重置错误提示
+            phoneError.style.display = 'none';
+            codeError.style.display = 'none';
+            agreeError.style.display = 'none';
+            
+            let isValid = true;
+            
+            if (!phoneInput.value) {
+                phoneError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!codeInput.value) {
+                codeError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!agreeCheckbox.checked) {
+                agreeError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // 验证通过，跳转到新页面
+                window.location.href = '模拟器页面.html';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部图片 -->
+        <div class="top-banner">
+            <img src="../resource/img/顶部图片.png" alt="三丽鸥家族游园会">
+        </div>
+
+        <!-- 领取通知区域 -->
+        <div class="recent-claims-section"></div>
+
+        <!-- 输入区域 -->
+        <div class="input-section">
+            <input type="text" class="phone-input" placeholder="请输入手机号码">
+            <div class="error-message" id="phone-error">请输入手机号码</div>
+            
+            <div class="code-container">
+                <input type="text" class="code-input" placeholder="请输入验证码">
+                <button class="get-code-btn" onclick="getVerificationCode()">获取验证码</button>
+            </div>
+            <div class="error-message" id="code-error">请输入验证码</div>
+            
+            <div class="agreement">
+                <input type="checkbox" id="agree">
+                <label for="agree">我已阅读并同意<a href="#">《入网协议》</a><a href="#">《个人信息公告》</a></label>
+            </div>
+            <div class="error-message" id="agree-error">请阅读并同意相关协议</div>
+
+            <button class="submit-btn" onclick="validateAndSubmit()">点击立玩</button>
+        </div>
+
+        <!-- 底部图片 -->
+        <div class="bottom-banner">
+            <img src="../resource/img/底部图片.png" alt="底部图片">
+        </div>
+    </div>
+</body>
+</html>

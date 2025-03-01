@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>和平精英|2025蛇年礼包</title>
+    <script>
+        (function(doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function() {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    if (clientWidth > 750) {
+                        clientWidth = 750;
+                    }
+                    docEl.style.fontSize = (clientWidth / 75) + 'px';
+                };
+
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+            recalc();
+        })(document, window);
+    </script>
+    <link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/layui/2.6.8/css/layui.min.css" rel="stylesheet">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/layui/2.6.8/layui.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #79BFFE;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 75rem;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .top-banner img, .bottom-banner img {
+            width: 100%;
+            display: block;
+        }
+
+        .content {
+            padding: 2rem;
+            text-align: center;
+            padding-top: 0;
+        }
+
+        .content h1 {
+            font-size: 4.8rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 1rem;
+        }
+
+        .game-item {
+            width: 100%;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .time {
+            font-size: 2.4rem;
+            color: #000000;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .time span {
+            color: #ff4d4f;
+            padding: 0 0.6rem;
+            font-size: 2.8rem;
+            font-weight: bold;
+        }
+
+        .item-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            position: relative;
+        }
+
+        .game-image {
+            width: 45%;
+            height: auto;
+            aspect-ratio: 1;
+            border-radius: 1rem;
+        }
+
+        .game-info {
+            flex: 1;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: space-between;
+        }
+
+        .game-name {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .game-price {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .price-zero {
+            font-size: 4rem;
+            color: rgb(253, 68, 17);
+            font-weight: bold;
+        }
+
+        .price-original {
+            font-size: 2.8rem;
+            color: #999;
+            text-decoration: line-through;
+            margin-top: 1rem;
+        }
+
+        .free-btn {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            background-color: rgb(253, 68, 17);
+            color: #fff;
+            padding: 1rem 2.5rem;
+            border-radius: 2rem;
+            font-size: 2.4rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 320px) {
+            .content h1 {
+                font-size: 4rem;
+            }
+
+            .time {
+                font-size: 2rem;
+            }
+
+            .time span {
+                font-size: 2.4rem;
+            }
+
+            .game-image {
+                width: 45%;
+            }
+
+            .game-name {
+                font-size: 2.6rem;
+            }
+
+            .price-zero {
+                font-size: 4rem;
+            }
+
+            .price-original {
+                font-size: 2.5rem;
+            }
+
+            .free-btn {
+                padding: 1rem 2rem;
+                font-size: 2rem;
+            }
+        }
+
+        /* 添加弹窗相关样式 */
+        .el-dialog__wrapper {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: auto;
+            margin: 0;
+            z-index: 2001;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .el-dialog {
+            position: relative;
+            margin: 15vh auto 50px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.3);
+            box-sizing: border-box;
+            width: 90%;
+            max-width: 750px;
+        }
+
+        .el-dialog__header {
+            padding: 15px 15px 10px;
+        }
+
+        .el-dialog__title {
+            line-height: 1.2;
+            font-size: 3rem;
+            color: #303133;
+        }
+
+        .el-dialog__headerbtn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 0;
+            background: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            width: 4rem;
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .el-dialog__body {
+            padding: 10px 15px 15px;
+            color: #606266;
+            font-size: 14px;
+            word-break: break-all;
+        }
+
+        .el-form-item {
+            margin-bottom: 13px;
+        }
+
+        .el-form-item__label {
+            text-align: left;
+            vertical-align: middle;
+            float: left;
+            font-size: 2.6rem;
+            color: #606266;
+            line-height: 6rem;
+            padding: 0;
+            box-sizing: border-box;
+            width: auto;
+            margin-right: 1rem;
+            white-space: nowrap;
+        }
+
+        .el-form-item.is-required .el-form-item__label:before {
+            content: '*';
+            color: #ff4d4f;
+            margin-right: 4px;
+            vertical-align: middle;
+            font-size: 2.6rem;
+        }
+
+        .el-form-item__content {
+            line-height: 6rem;
+            position: relative;
+            font-size: 2.4rem;
+            margin-left: 0;
+            overflow: hidden;
+        }
+
+        .el-input__inner {
+            -webkit-appearance: none;
+            background-color: #fff;
+            background-image: none;
+            border-radius: 2rem;
+            border: 1px solid #409eff;
+            box-sizing: border-box;
+            color: #606266;
+            display: inline-block;
+            font-size: inherit;
+            height: 6rem;
+            line-height: 6rem;
+            outline: none;
+            padding: 0 2rem;
+            transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+            width: 100%;
+        }
+
+        .el-input__inner:focus {
+            border-color: #66b1ff;
+        }
+
+        .el-input__inner::placeholder {
+            color: #c0c4cc;
+        }
+
+        .form-button {
+            width: 100%;
+            text-align: center;
+            background-color: rgb(253, 68, 17);
+            color: #fff;
+            margin-top: 1.3rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+            border-radius: 2rem;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 2.4rem;
+            cursor: pointer;
+            height: 6rem;
+        }
+
+        .el-icon-close:before {
+            content: "×";
+            font-size: 3.6rem;
+            color: #909399;
+            line-height: 1;
+        }
+
+        /* 添加加载遮罩样式 */
+        .mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            display: none;
+        }
+
+        .loading {
+            width: 36px;
+            height: 36px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top: 2px solid transparent;
+            animation: rotate 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -18px 0 0 -18px;
+        }
+
+        .bdz {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 50px);
+            color: #fff;
+            font-size: 2.4rem;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部图片 -->
+        <div class="top-banner">
+            <img src="../resource\img\顶部图片.png" alt="顶部图片">
+        </div>
+
+        <!-- 内容区域 -->
+        <div class="content">
+            <h1>《蛋仔派对》主播专属赠送</h1>
+            <div class="game-list">
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\10000蛋币.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">10000蛋币</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\神裁者安努斯.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">神裁者安努斯</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\北辰星斗破君.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">北辰星斗破君</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\鲸鱼五十二.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">鲸鱼五十二</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\苗族圣女蚩离.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">苗族圣女蚩离</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\圣翼天使—坠.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">圣翼天使—坠</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\喜宝儿.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">喜宝儿</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\布偶狮雷格.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">布偶狮雷格</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\冰淇淋企鹅.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">冰淇淋企鹅</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\万圣小南瓜.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">万圣小南瓜</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\红果小浣熊.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">红果小浣熊</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <div class="time">
+                        <span>29</span>天<span>23</span>时<span>59</span>分<span>36</span>秒后 结束抢购
+                    </div>
+                    <div class="item-content">
+                        <img src="../resource\img\胡半仙.jpg" alt="游戏1" class="game-image">
+                        <div class="game-info">
+                            <div class="game-name">胡半仙</div>
+                            <div class="game-price">
+                                <span class="price-zero">0</span>
+                                <span class="price-original">3200</span>
+                            </div>
+                            <button class="free-btn">免费领取</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部图片 -->
+        <div class="bottom-banner">
+            <img src="../resource\img\底部图片.png" alt="底部图片">
+        </div>
+    </div>
+
+    <!-- 在 </body> 标签前添加弹窗 -->
+    <div class="el-dialog__wrapper" style="z-index: 2001; display: none;">
+        <div role="dialog" aria-modal="true" aria-label="领取『点券*6888』" class="el-dialog" style="margin-top: 15vh; width: 90%;">
+            <div class="el-dialog__header">
+                <span class="el-dialog__title">领取『点券*6888』</span>
+                <button type="button" aria-label="Close" class="el-dialog__headerbtn">
+                    <i class="el-dialog__close el-icon el-icon-close"></i>
+                </button>
+            </div>
+            <div class="el-dialog__body">
+                <form class="el-form">
+                    <div class="el-form-item is-required">
+                        <label class="el-form-item__label">游戏名称</label>
+                        <div class="el-form-item__content">
+                            <div class="el-input">
+                                <input type="text" autocomplete="off" placeholder="请输入您的游戏名称" class="el-input__inner">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="el-button form-button el-button--danger el-button--medium is-round">
+                        <span>点击领取</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="mask">
+        <div class="loading"></div>
+        <p class="bdz">领取中...</p>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const countdowns = document.querySelectorAll(".time");
+            const end = new Date();
+            end.setDate(end.getDate() + 30);
+
+            function update() {
+                const now = new Date();
+                const diff = end - now;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                countdowns.forEach(countdown => {
+                    countdown.innerHTML = `<span>${days}</span>天<span>${hours}</span>时<span>${minutes}</span>分<span>${seconds}</span>秒后 结束抢购`;
+                });
+
+                requestAnimationFrame(update);
+            }
+
+            update();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有免费领取按钮
+            const freeButtons = document.querySelectorAll('.free-btn');
+            const dialog = document.querySelector('.el-dialog__wrapper');
+            const closeBtn = dialog.querySelector('.el-dialog__headerbtn');
+            const submitBtn = dialog.querySelector('.form-button');
+            const input = dialog.querySelector('.el-input__inner');
+            const dialogTitle = dialog.querySelector('.el-dialog__title');
+
+            // 点击免费领取按钮显示弹窗
+            freeButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 获取对应的游戏名称
+                    const gameItem = btn.closest('.game-item');
+                    const gameName = gameItem.querySelector('.game-name').textContent;
+                    dialogTitle.textContent = `领取『${gameName}』`;
+                    dialog.style.display = 'block';
+                });
+            });
+
+            // 点击关闭按钮关闭弹窗
+            closeBtn.addEventListener('click', function() {
+                dialog.style.display = 'none';
+                input.value = '';
+            });
+
+            // 点击提交按钮
+            submitBtn.addEventListener('click', function() {
+                if(!input.value) {
+                    layui.use(function() {
+                        var layer = layui.layer;
+                        // 只取设备宽度的80%
+                        var width = document.documentElement.clientWidth * 0.8;
+                        layer.msg('请输入游戏名称', {
+                            area: [width + 'px', 'auto']
+                        });
+                    });
+                    return;
+                }
+                
+                // 显示加载遮罩
+                const mask = document.querySelector('.mask');
+                mask.style.display = 'block';
+                
+                // 模拟加载过程
+                setTimeout(() => {
+                    mask.style.display = 'none';
+                    dialog.style.display = 'none';
+                    layui.use(function() {
+                        var layer = layui.layer;
+                        // 只取设备宽度的80%
+                        var width = document.documentElement.clientWidth * 0.8;
+                        layer.msg('领取成功，24小时后登陆游戏查看', {
+                            area: [width + 'px', 'auto']
+                        });
+                    });
+                    input.value = '';
+                }, 1000);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', updateCountdown);
+    </script>
+</body>
+</html>
