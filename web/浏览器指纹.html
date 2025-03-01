@@ -1,0 +1,58 @@
+<head></head>
+<body>
+    <div id="fingerprint"></div>
+    <script>
+        function generateBrowserFingerprint() {
+            const userAgent = navigator.userAgent;
+            const screenResolution = `${window.screen.width}x${window.screen.height}`;
+            const language = navigator.language;
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const plugins = Array.from(navigator.plugins).map(plugin => plugin.name).join(',');
+            const hardwareConcurrency = navigator.hardwareConcurrency || 'unknown';
+            const deviceMemory = navigator.deviceMemory || 'unknown';
+
+            // Canvas 指纹
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#f60';
+            ctx.fillRect(125, 1, 62, 20);
+            ctx.fillStyle = '#069';
+            ctx.fillText('Browser Fingerprint', 2, 15);
+            const canvasFingerprint = canvas.toDataURL();
+
+            // WebGL 指纹
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            let webglFingerprint = 'unknown';
+            if (gl) {
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                if (debugInfo) {
+                    webglFingerprint = `${gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL)}-${gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)}`;
+                }
+            }
+
+            // 组合指纹信息
+            const fingerprint = {
+                userAgent,
+                screenResolution,
+                language,
+                timezone,
+                plugins,
+                hardwareConcurrency,
+                deviceMemory,
+                canvasFingerprint,
+                webglFingerprint,
+            };
+
+            // 将指纹信息转换为字符串（可以进一步哈希）
+            return JSON.stringify(fingerprint);
+        }
+
+        // 示例
+        const browserFingerprint = generateBrowserFingerprint();
+
+        // 在页面上显示指纹
+        document.getElementById('fingerprint').innerText = browserFingerprint;
+    </script>
+</body>
